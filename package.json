@@ -9,8 +9,10 @@
   "author": "ghorbani.dev",
   "license": "ISC",
   "dependencies": {
+    "auto-bind": "^3.0.0",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "http-errors": "^2.0.0",
     "mongoose": "^8.15.1",
     "nodemon": "^3.1.10",
     "swagger-jsdoc": "^6.2.8",
