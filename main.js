@@ -11,10 +11,10 @@ async function main() {
     require("./src/config/mongoose.config")
     app.use(express.json())
     app.use(express.urlencoded({extended: true}))
-    SwaggerConfig(app)
     app.use(mainRouter)
-    NotFoundHandler(app)
-    AllExceptionHandler(app)
+    SwaggerConfig(app)
+    NotFoundHandler(app);
+    AllExceptionHandler(app);
     app.listen(port, () => {
         console.log(`Server: http://localhost:${port}`);
     })
