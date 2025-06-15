@@ -2,7 +2,8 @@ const autoBind = require("auto-bind");
 const UserModel = require("../user/user.model");
 const createHttpError = require("http-errors");
 const { AuthMessage } = require("./auth.messages");
-const {randomInt} = require("crypto")
+const {randomInt} = require("crypto");
+const jwt = require("jsonwebtoken")
 class AuthService{
     #model;
     constructor(){
@@ -36,14 +37,20 @@ class AuthService{
         user.verifiedMobile = true;
         await user.save();
       }
-      return user;
-      
+      const accessToken = this.signToken({mobile , id: user._id})
+      return accessToken;
       
     }
     async checkExistByMobile(mobile){
       const user = await this.#model.findOne({mobile});
-       if(!user) throw new createHttpError.NotFound(AuthMessage.NotFound);
-       return user
+      if(!user) throw new createHttpError.NotFound(AuthMessage.NotFound);
+      return user
+    }
+    signToken(payload){
+      return jwt.sign(payload, process.env.JWT_SECRET_KEY , {
+        expiresIn: "7d",
+        algorithm: "HS512"
+      })
     }
 }
 

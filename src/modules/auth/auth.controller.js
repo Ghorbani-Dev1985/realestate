@@ -1,6 +1,8 @@
+const NodeEnv = require("../../common/constant/env.enum");
 const { AuthMessage } = require("./auth.messages");
 const authService = require("./auth.service");
-const autoBind = require("auto-bind")
+const autoBind = require("auto-bind");
+
 class AuthController{
     #service;
     constructor(){
@@ -21,11 +23,14 @@ class AuthController{
     async checkOTP(req , res , next){
         try {
              const {mobile, code} = req.body;
-           await this.#service.checkOTP(mobile , code);
-           return res.json({
+          const accessToken = await this.#service.checkOTP(mobile , code);
+         return res.cookie('real_estate' , accessToken , {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === NodeEnv.Production,
+            sameSite: "none"
+          }).status(200).json({
             message: AuthMessage.LoginSuccessfully
-           });
-            
+          })           
         } catch (error) {
             next(error)
         }
