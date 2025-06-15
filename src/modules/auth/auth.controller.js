@@ -1,3 +1,4 @@
+const CookieNames = require("../../common/constant/cookie.enum");
 const NodeEnv = require("../../common/constant/env.enum");
 const { AuthMessage } = require("./auth.messages");
 const authService = require("./auth.service");
@@ -25,7 +26,7 @@ class AuthController{
              const {mobile, code} = req.body;
           const accessToken = await this.#service.checkOTP(mobile , code);
           const oneWeekMs = 1000 * 60 * 60 * 24 * 7;
-         return res.cookie('real_estate' , accessToken , {
+         return res.cookie(CookieNames.AccessToke , accessToken , {
             maxAge: oneWeekMs,
             httpOnly: true,
             secure: process.env.NODE_ENV === NodeEnv.Production,
@@ -38,7 +39,9 @@ class AuthController{
     }
     async logout(req , res , next){
         try {
-            
+            return res.clearCookie(CookieNames.AccessToken).status(200).json({
+                message: AuthMessage.LogoutSuccessfully
+            })
         } catch (error) {
             next(error)
         }
