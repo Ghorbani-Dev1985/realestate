@@ -1,10 +1,10 @@
 const AuthMessage = {
-    SendOtpSuccessfully: "Sent otp successfully",
-    NotFound: "User Not Found",
-    OtpCodeNotExpired: "Otp code not expired, please try again",
-    OtpCodeExpired: "Otp code expired, please to get new code",
-    OtpCodeIsIncorrect: "Otp code is incorrect!",
-    LoginSuccessfully: "Login successfully ..."
+    SendOtpSuccessfully: "کد یکبار مصرف با موفقیت ارسال شد",
+    NotFound: "کاربری یافت نگردید",
+    OtpCodeNotExpired: "کد یکبار مصرف منقضی نشده لطفا کد ارسال شده را وارد نمایید",
+    OtpCodeExpired: "کد یکبار مصرف منقضی شده لطفا درخواست کد جدید نمایید",
+    OtpCodeIsIncorrect: "کد یکبار مصرف اشتباه وارد شده است",
+    LoginSuccessfully: "ورود به حساب با موفقیت انجام شد"
 }
 
 module.exports = {

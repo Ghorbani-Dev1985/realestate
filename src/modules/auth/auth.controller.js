@@ -24,13 +24,14 @@ class AuthController{
         try {
              const {mobile, code} = req.body;
           const accessToken = await this.#service.checkOTP(mobile , code);
+          const oneWeekMs = 1000 * 60 * 60 * 24 * 7;
          return res.cookie('real_estate' , accessToken , {
+            maxAge: oneWeekMs,
             httpOnly: true,
             secure: process.env.NODE_ENV === NodeEnv.Production,
-            sameSite: "none"
           }).status(200).json({
             message: AuthMessage.LoginSuccessfully
-          })           
+          });           
         } catch (error) {
             next(error)
         }
