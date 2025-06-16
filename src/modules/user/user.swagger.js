@@ -28,6 +28,6 @@
  *          -   User
  *      responses:
  *          200:
- *              description: success
+ *              description: successfully
  */
 

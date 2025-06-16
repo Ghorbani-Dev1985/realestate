@@ -80,5 +80,5 @@
  *          -   Auth
  *      responses:
  *          200:
- *              description: success
+ *              description: successfully
  */

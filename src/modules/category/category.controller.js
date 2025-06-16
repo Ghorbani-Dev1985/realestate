@@ -12,7 +12,7 @@ class CategoryController {
     try {
         const {name , icon , slug , parent} = req.body;
         await this.#service.create({name , icon , slug , parent});
-        res.status(HttpCodes.CREATED).json({message: CategoryMessage.Created});
+       return res.status(HttpCodes.CREATED).json({message: CategoryMessage.Created});
     } catch (error) {
         next(error);
     }

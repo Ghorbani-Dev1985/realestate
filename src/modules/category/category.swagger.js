@@ -29,27 +29,30 @@
  * @swagger
  * /category:
  *  post:
- *      summery: create new category
- *      tags: 
- *          -  Category
+ *      summary: create new category
+ *      tags:
+ *          -   Category
  *      requestBody:
- *          content:    
+ *          content:
  *              application/x-www-form-urlencoded:
  *                  schema:
  *                      $ref: '#/components/schemas/CreateCategory'
  *              application/json:
  *                  schema:
  *                      $ref: '#/components/schemas/CreateCategory'
+ *      responses:
+ *          201: 
+ *              description: created
  */
 
 /**
  * @swagger
  * /category:
  *  get:
- *      summery: get all categories
+ *      summary: get all categories
  *      tags: 
  *          -  Category
  *      responses:
  *          200:
- *              description: success
+ *              description: successfully
  */
