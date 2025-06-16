@@ -29,7 +29,7 @@ class CategoryService {
     ];
     }
     if(categoryDto?.slug){
-      categoryDto.slug = slugify(categoryDto.slug);
+      categoryDto.slug = slugify(categoryDto.slug , {trim: true , replacement: "_", lower: true});
       await this.alreadyExistBySlug(categoryDto.slug);
     }else{
       categoryDto.slug = slugify(categoryDto.name);
