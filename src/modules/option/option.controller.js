@@ -29,14 +29,18 @@ class OptionController {
     }
     async findByCategoryId(req , res , next) {
         try {
-            
+        const {categoryId} = req.params;
+        const option = await this.#service.findByCategoryId(categoryId)
+        return res.json(option)
         } catch (error) {
             next(error);
         }
     }
     async findById(req , res , next) {
     try {
-        
+        const {id} = req.params;
+        const option = await this.#service.findById(id)
+        return res.json(option)
     } catch (error) {
         next(error);
     }

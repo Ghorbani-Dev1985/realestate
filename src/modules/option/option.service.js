@@ -30,6 +30,12 @@ class OptionService {
      const option = await this.#model.create(OptionDto);
      return option;
   }
+  async findById(id){
+    return await this.checkExistById(id)
+  }
+  async findByCategoryId(category){
+    return await this.#model.findOne({category}, {__v: 0}).populate([{path: "category", select: {name: 1, slug: 1}}]);
+  }
   async checkExistById(id) {
    const category = await this.#categoryModel.findById(id);
      if(!category) throw new createHttpError.NotFound(OptionMessage.NotFound) 
@@ -40,7 +46,6 @@ class OptionService {
      if(isExist) throw new createHttpError.Conflict(OptionMessage.AlreadyExists) 
     return null;
   }
-
 }
 
 module.exports = new OptionService();
