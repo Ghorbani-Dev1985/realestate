@@ -1,9 +1,9 @@
 const autoBind = require("auto-bind");
-const OptionModel = require("./Option.model");
+const OptionModel = require("./option.model");
 const CategoryModel = require("./../category/category.model");
 const { isValidObjectId, Types } = require("mongoose");
 const createHttpError = require("http-errors");
-const OptionMessage = require("./Option.message");
+const OptionMessage = require("./option.message");
 const { default: slugify } = require("slugify");
 
 class OptionService {
@@ -15,7 +15,8 @@ class OptionService {
     this.#categoryModel = CategoryModel;
   }
   async find(){
-   
+    const options = await this.#model.find({} , {__v:0} , {sort: {_id: -1}}).populate([{path: "category", select: {name: 1, slug: 1}}]);
+    return options;
   }
 
   async create(OptionDto) {

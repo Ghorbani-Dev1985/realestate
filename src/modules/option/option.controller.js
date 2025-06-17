@@ -1,6 +1,6 @@
 const autoBind = require("auto-bind");
-const OptionService = require("./Option.service");
-const OptionMessage = require("./Option.message");
+const OptionService = require("./option.service");
+const OptionMessage = require("./option.message");
 const HttpCodes = require("http-codes")
 class OptionController {
     #service;
@@ -21,7 +21,8 @@ class OptionController {
   }
      async find(req , res , next) {
         try {
-           
+           const options = await this.#service.find();
+           return res.json(options)
         } catch (error) {
             next(error);
         }
