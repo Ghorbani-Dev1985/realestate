@@ -1,16 +1,19 @@
 const autoBind = require("auto-bind");
 const OptionModel = require("./option.model");
-const CategoryModel = require("./../category/category.model");
+const CategoryService = require("./../category/category.service");
 const { isValidObjectId, Types } = require("mongoose");
 const createHttpError = require("http-errors");
 const OptionMessage = require("./option.message");
 const { default: slugify } = require("slugify");
+const { isTrue, isFalse } = require("../../common/utils/functions");
 
 class OptionService {
   #model;
+  #categoryService;
   constructor(){
     autoBind(this);
     this.#model = OptionModel;
+    this.#categoryService = CategoryService
   }
   async find(){
     const options = await this.#model.find({} , {__v:0} , {sort: {_id: -1}}).populate([{path: "category", select: {name: 1, slug: 1}}]);
@@ -18,13 +21,15 @@ class OptionService {
   }
 
   async create(OptionDto) {
-     const category = await this.checkExistById(OptionDto.category);
+     const category = await this.#categoryService.checkExistById(OptionDto.category);
      OptionDto.category = category._id;
      OptionDto.key= slugify(OptionDto.key , {trim: true, replacement: "_" , lower: true});
      await this.alreadyExistByCategoryAndKey(OptionDto.key , category._id);
      if(OptionDto.enum && typeof OptionDto.enum === "string"){
         OptionDto.enum = OptionDto.enum.split(",")
      }else if(Array.isArray(OptionDto.enum)) OptionDto.enum = [];
+    if(isTrue(OptionDto?.required)) OptionDto.required = true;
+    if(isFalse(OptionDto?.required)) OptionDto.required = false;
      const option = await this.#model.create(OptionDto);
      return option;
   }
