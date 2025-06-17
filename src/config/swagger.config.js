@@ -14,7 +14,7 @@ function SwaggerConfig(app){
         apis: [process.cwd() + "/src/modules/**/*.swagger.js"]
     });
    const Swagger = swaggerUi.setup(swaggerDocument, {});
-    app.use("/" , swaggerUi.serve , Swagger)
+    app.use("/api" , swaggerUi.serve , Swagger)
 }
 
 module.exports = SwaggerConfig
