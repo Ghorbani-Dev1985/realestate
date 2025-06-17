@@ -8,11 +8,9 @@ const { default: slugify } = require("slugify");
 
 class OptionService {
   #model;
-  #categoryModel;
   constructor(){
     autoBind(this);
     this.#model = OptionModel;
-    this.#categoryModel = CategoryModel;
   }
   async find(){
     const options = await this.#model.find({} , {__v:0} , {sort: {_id: -1}}).populate([{path: "category", select: {name: 1, slug: 1}}]);
@@ -32,6 +30,10 @@ class OptionService {
   }
   async findById(id){
     return await this.checkExistById(id)
+  }
+  async removeById(id){
+    await this.checkExistById(id);
+   return await this.#model.deleteOne({_id: id});
   }
   async findByCategoryId(category){
     return await this.#model.findOne({category}, {__v: 0}).populate([{path: "category", select: {name: 1, slug: 1}}]);
@@ -72,9 +74,12 @@ class OptionService {
     return options;
   }
   async checkExistById(id) {
-   const category = await this.#categoryModel.findById(id);
-     if(!category) throw new createHttpError.NotFound(OptionMessage.NotFound) 
-    return category;
+    if (!isValidObjectId(id)) {
+    throw new createHttpError.BadRequest(OptionMessage.InvalidId);
+   }
+   const option = await this.#model.findById(id);
+     if(!option) throw new createHttpError.NotFound(OptionMessage.NotFound) 
+    return option;
   }
     async alreadyExistByCategoryAndKey(key , category) {
    const isExist = await this.#model.findOne({category , key});

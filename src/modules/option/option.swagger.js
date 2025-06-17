@@ -100,7 +100,7 @@
  *          -   Option
  *      parameters:
  *          -   in: path   
- *              name: categoryId
+ *              name: id
  *              type: string
  *      responses:
  *          200:
@@ -117,4 +117,20 @@
  *      responses:
  *          200:
  *              description: successfully
+ */
+
+/**
+ * @swagger
+ * /option/{id}:
+ *  delete:
+ *      summary: delete option by id
+ *      tags: 
+ *          -   Option
+ *      parameters:
+ *          -   in: path   
+ *              name: id
+ *              type: string
+ *      responses:
+ *          200:
+ *              description: deleted successfully
  */

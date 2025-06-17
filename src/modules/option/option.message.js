@@ -4,6 +4,7 @@ const OptionMessage = Object.freeze({
   Deleted: "گزینه با موفقیت حذف شد",
   NotFound: "گزینه یافت نشد",
   AlreadyExists: "گزینه از قبل وجود دارد",
+  InvalidId : "شناسه‌ی وارد شده معتبر نیست"
 });
 
 module.exports = OptionMessage;
