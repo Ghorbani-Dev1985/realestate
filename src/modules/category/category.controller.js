@@ -17,6 +17,19 @@ class CategoryController {
         next(error);
     }
   }
+  async update(req, res, next) {
+  try {
+    const { id } = req.params;
+    const updateDto = req.body;
+    await this.#service.update(id, updateDto);
+    res.json({
+      message: CategoryMessage.Updated
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
    async find(req , res , next) {
     try {
         const categories = await this.#service.find();

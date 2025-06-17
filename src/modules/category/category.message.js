@@ -4,6 +4,7 @@ const CategoryMessage = Object.freeze({
   Deleted: "دسته بندی با موفقیت حذف شد",
   NotFound: "دسته بندی یافت نشد",
   AlreadyExists: "دسته بندی از قبل وجود دارد",
+  InvalidParent: "والد دشته بندی نامعتبر است"
 });
 
 module.exports = CategoryMessage;

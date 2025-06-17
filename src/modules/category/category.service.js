@@ -12,13 +12,13 @@ class CategoryService {
   constructor(){
     autoBind(this);
     this.#model = CategoryModel;
-    this.#model = OptionModel;
+    this.#optionModel = OptionModel;
   }
   async find(){
     return await this.#model.find({parent: {$exists : false}});
   }
    async remove(id){
-    const category = await this.checkExistById(id);
+    await this.checkExistById(id);
     await this.#optionModel.deleteMany({category : id}).then(async () => {
       await this.#model.deleteMany({_id : id});
     });
@@ -47,6 +47,43 @@ class CategoryService {
     const category = await this.#model.create(categoryDto);
     return category;
   }
+  async update(id, updateDto) {
+  await this.checkExistById(id);
+
+  if (updateDto?.parent) {
+  if (isValidObjectId(updateDto.parent)) {
+    const parentCategory = await this.checkExistById(updateDto.parent);
+    updateDto.parents = [
+      ...Array.from(
+        new Set([
+          parentCategory._id.toString(),
+          ...parentCategory.parents.map(id => id.toString())
+        ])
+      ).map(id => new Types.ObjectId(id))
+    ];
+  } else {
+    throw new createHttpError.BadRequest(CategoryMessage.InvalidParent);
+  }
+}
+
+
+  if (updateDto?.slug) {
+    updateDto.slug = slugify(updateDto.slug, {
+      trim: true,
+      replacement: "_",
+      lower: true
+    });
+
+    const slugOwner = await this.#model.findOne({ slug: updateDto.slug });
+    if (slugOwner && slugOwner._id.toString() !== id) {
+      throw new createHttpError.Conflict(CategoryMessage.AlreadyExists);
+    }
+  }
+
+  await this.#model.updateOne({ _id: id }, { $set: updateDto });
+  return await this.#model.findById(id); 
+}
+
   async checkExistById(id) {
     const category = await this.#model.findById(id);
     if(!category) throw new createHttpError.NotFound(CategoryMessage.NotFound);
