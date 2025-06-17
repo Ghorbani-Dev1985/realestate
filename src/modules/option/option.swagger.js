@@ -61,9 +61,9 @@
 
 /**
  * @swagger
- * /option/category/{categoryId}:
+ * /option/by_category/{categoryId}:
  *  get:
- *      summary: get all option of category
+ *      summary: Get options by category id
  *      tags: 
  *          -   Option
  *      parameters:
@@ -77,9 +77,25 @@
 
 /**
  * @swagger
+ * /option/by_category_slug/{slug}:
+ *  get:
+ *      summary: Get options by category slug
+ *      tags: 
+ *          -   Option
+ *      parameters:
+ *          -   in: path   
+ *              name: slug
+ *              type: string
+ *      responses:
+ *          200:
+ *              description: successfully
+ */
+
+/**
+ * @swagger
  * /option/{id}:
  *  get:
- *      summary: get option by id
+ *      summary: get options by id
  *      tags: 
  *          -   Option
  *      parameters:

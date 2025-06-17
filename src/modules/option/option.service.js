@@ -36,6 +36,41 @@ class OptionService {
   async findByCategoryId(category){
     return await this.#model.findOne({category}, {__v: 0}).populate([{path: "category", select: {name: 1, slug: 1}}]);
   }
+  async findByCategorySlug(slug){
+    const options = await this.#model.aggregate([
+      {
+        $lookup: {
+        from:  "categories",
+        localField: "category",
+        foreignField: "_id",
+        as: "category"
+        }
+      },
+      {
+        $unwind: "$category"
+      },
+      {
+        $addFields: {
+          categorySlug: "$category.slug"
+        }
+      },
+      {
+        $project: {
+          "category.parent" : 0,
+          "category.parents" : 0,
+          "category._id" : 0,
+          "category.icon" : 0,
+          __v: 0
+        }
+      },
+      {
+        $match: {
+          categorySlug: slug
+        }
+      }
+    ]);
+    return options;
+  }
   async checkExistById(id) {
    const category = await this.#categoryModel.findById(id);
      if(!category) throw new createHttpError.NotFound(OptionMessage.NotFound) 
