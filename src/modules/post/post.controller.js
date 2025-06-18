@@ -17,14 +17,17 @@ class PostController {
     try {
         let {slug} = req.query;
         let match = {parent: null};
+        let options;
         if(slug){
           slug = slug.trim();
           const childrenCategory = await CategoryModel.findOne({slug});
           if(!childrenCategory) throw new createHttpError.NotFound(PostMessage.NotFoundCategory);
+          options = await this.#service.getCategoryOptions(childrenCategory.id);
+          if(options.length === 0) options = null;
           match = {parent: CategoryModel._id}
         }
         const categories = await CategoryModel.aggregate([{$match: match}])
-        return res.json(categories)
+        return res.json(categories , options)
     } catch (error) {
         next(error)
     }
