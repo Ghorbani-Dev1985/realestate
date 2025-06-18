@@ -9,6 +9,8 @@ const PostSchema = new Schema({
    district: {type: String , required: true},
    coordinate: {type: [Number], required: true},
    images: {type: [String], required: false, default: []},
-})
+   price: {type: Number , required: true}
+}, {timestamps: true});
 
-module.exports = PostSchema
+const PostModel = model("post" , PostSchema);
+module.exports = PostModel;
