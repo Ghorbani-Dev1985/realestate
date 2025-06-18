@@ -8,8 +8,7 @@ const PostSchema = new Schema({
    city: {type: String , required: true},
    district: {type: String , required: true},
    coordinate: {type: [Number], required: true},
-   images: {type: [String], required: false, default: []},
-   price: {type: Number , required: true}
+   images: {type: [String], required: false, default: []}
 }, {timestamps: true});
 
 const PostModel = model("post" , PostSchema);

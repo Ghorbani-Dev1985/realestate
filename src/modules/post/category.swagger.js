@@ -38,7 +38,7 @@
 
 /**
  * @swagger
- * /category:
+ * /create:
  *  post:
  *      summary: create new category
  *      tags:
@@ -56,21 +56,10 @@
  *              description: created
  */
 
-/**
- * @swagger
- * /category:
- *  get:
- *      summary: Get all categories
- *      tags: 
- *          -  Post
- *      responses:
- *          200:
- *              description: successfully
- */
 
 /**
  * @swagger
- * /categories:
+ * /create/categories:
  *  get:
  *      summary: Get all categories
  *      tags: 
