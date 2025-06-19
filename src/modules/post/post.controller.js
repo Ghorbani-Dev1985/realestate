@@ -1,11 +1,13 @@
 const autoBind = require("auto-bind");
-
 const HttpCodes = require("http-codes");
 const PostService = require("./post.service");
 const PostMessage = require("./post.message");
 const CategoryModel = require("./../category/category.model");
 const createHttpError = require("http-errors");
 const { Types } = require("mongoose");
+const { getAddressDetail } = require("../../common/utils/http");
+const { removePropertyInObject } = require("../../common/utils/functions");
+
 
 class PostController {
   #service;
@@ -35,15 +37,10 @@ class PostController {
   }
  async create(req , res , next) {
     try {
-        const {title , description , category , lat , lng} = req.body;
-        delete req.body['post'];
-        delete req.body['description'];
-        delete req.body['category'];
-        delete req.body['lat'];
-        delete req.body['lng'];
-        delete req.body['images'];
-        const options = req.body;
-        await this.#service.create({title , description , category: new Types.ObjectId(category) , coordinate: [lat , lng] , images: [], options});
+        const {title , description , category , lat , lon} = req.body;
+        const {province, city, region, address} = await getAddressDetail(lat , lon)
+        const options = removePropertyInObject(req.body, ['post','description','category','lat','lon','images']) ;
+        await this.#service.create({title , description , category: new Types.ObjectId(category) , coordinate: [lat , lon] , images: [], options , province , city, region, address});
        return res.status(HttpCodes.CREATED).json({message: PostMessage.Created});
     } catch (error) {
         next(error);
