@@ -37,10 +37,11 @@ class PostController {
   }
  async create(req , res , next) {
     try {
+        const images = req?.files?.map(image => image?.path?.slice(7))
         const {title , description , category , lat , lon} = req.body;
         const {province, city, region, address} = await getAddressDetail(lat , lon)
         const options = removePropertyInObject(req.body, ['post','description','category','lat','lon','images']) ;
-        await this.#service.create({title , description , category: new Types.ObjectId(category) , coordinate: [lat , lon] , images: [], options , province , city, region, address});
+        await this.#service.create({title , description , category: new Types.ObjectId(category) , coordinate: [lat , lon] , images, options , province , city, region, address});
        return res.status(HttpCodes.CREATED).json({message: PostMessage.Created});
     } catch (error) {
         next(error);
