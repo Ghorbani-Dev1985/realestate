@@ -11,7 +11,8 @@ const PostSchema = new Schema({
    address: {type: String , required: false},
    coordinate: {type: [Number], required: true},
    images: {type: [String], required: false, default: []},
-   options: {type: Object , default: {}}
+   options: {type: Object , default: {}},
+   publish: {type: Boolean , default: false}
 }, {timestamps: true});
 
 const PostModel = model("post" , PostSchema);

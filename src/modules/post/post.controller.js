@@ -37,12 +37,14 @@ class PostController {
   }
  async create(req , res , next) {
     try {
+        const userId = req.user._id 
         const images = req?.files?.map(image => image?.path?.slice(7))
         const {title , description , category , lat , lon} = req.body;
         const {province, city, region, address} = await getAddressDetail(lat , lon)
         const options = removePropertyInObject(req.body, ['post','description','category','lat','lon','images']) ;
-        await this.#service.create({title , description , category: new Types.ObjectId(category) , coordinate: [lat , lon] , images, options , province , city, region, address});
-       return res.status(HttpCodes.CREATED).json({message: PostMessage.Created});
+        await this.#service.create({userId,title , description , category: new Types.ObjectId(category) , coordinate: [lat , lon] , images, options , province , city, region, address});
+        const posts = await this.#service.find(userId);
+       return res.status(HttpCodes.CREATED).json({posts, count: posts.length,message: PostMessage.Created});
     } catch (error) {
         next(error);
     }
@@ -58,13 +60,16 @@ class PostController {
     try {
       const userId = req.user._id;
       const posts = await this.#service.find(userId);
-      return res.send({posts})
+      return res.send({posts , count:posts.length,message: null})
     } catch (error) {
       next(error);
     }
   }
   async remove(req, res, next) {
     try {
+      const {id} = req.params;
+      await this.#service.remove(id);
+      return res.send({message: PostMessage.Deleted})
     } catch (error) {
       next(error);
     }
