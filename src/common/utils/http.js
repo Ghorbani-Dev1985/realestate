@@ -1,4 +1,4 @@
-const {default: axios} = require("axios"); // must installconst {default: axios} = require("axios"); // must install
+const {default: axios} = require("axios");
 require("dotenv").config();
 
 const getAddressDetail = async (lat , lon) => {

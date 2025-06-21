@@ -5,6 +5,7 @@ const PostMessage = Object.freeze({
   NotFound: " پست یافت نشد",
   NotFoundCategory : "دسته بندی یافت نگردید",
   AlreadyExists: " پست از قبل وجود دارد",
+  RequestNotValid: "درخواست ارسال شده معتبر نمی باشد"
 });
 
 module.exports = PostMessage;

@@ -54,8 +54,11 @@ class PostController {
     }
   }
 
-  async find(req, res, next) {
+  async findUserPosts(req, res, next) {
     try {
+      const userId = req.user._id;
+      const posts = await this.#service.find(userId);
+      return res.send({posts})
     } catch (error) {
       next(error);
     }

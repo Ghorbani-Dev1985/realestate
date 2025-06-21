@@ -6,6 +6,7 @@ const createHttpError = require("http-errors");
 
 const { default: slugify } = require("slugify");
 const PostModel = require("./post.model");
+const PostMessage = require("./post.message");
 
 class PostService {
   #model;
@@ -22,6 +23,10 @@ class PostService {
   }
   async create(dto){
    return await this.#model.create(dto)
+  }
+  async find(userId){
+   if(userId && isValidObjectId(userId)) return await this.#model.find({userId});
+   throw new createHttpError.BadRequest(PostMessage.RequestNotValid)
   }
 }
 
